@@ -1,18 +1,29 @@
 # Khwarizmiat — khwarizmiat.org
 
-Static marketing site for Khwarizmiat (خوارزميات), v1, English-only. Plain
-HTML/CSS with no build step, self-hosted fonts, and no server-side runtime
+Static marketing site for Khwarizmiat (خوارزميات), v1.1, English-only. Plain
+HTML/CSS/JS with no build step, self-hosted fonts, and no server-side runtime
 dependencies — built to be a straight CSS/content swap for a future
 Arabic/RTL bilingual pass rather than a rebuild (logical CSS properties
 throughout, `lang`/`dir` already set on `<html>`, mono slots documented for
 the future IBM Plex Sans Arabic swap).
 
+**Privacy:** the site names no individual (no bios, roles, or photos — this
+is a collective initiative) and lists exactly one contact channel,
+`info@khwarizmiat.org`. Don't reintroduce a personal email, phone number, or
+named contact anywhere (visible text, `mailto:`/`tel:` links, meta tags, or
+comments) without deliberately deciding to.
+
 ## Structure
 
 ```
-index.html          single-page v1 (mission, three commitments, who we are, contact)
+index.html          single-page v1.1 (mission, three commitments, what we do,
+                      focus areas, who we are, contact)
 css/style.css        design tokens, layout, components
 css/fonts.css         self-hosted @font-face declarations
+js/main.js           progressive enhancement: scroll reveals, icon draw-in,
+                      background-texture parallax — all gated behind
+                      prefers-reduced-motion and behind a `.js` class so the
+                      page renders fully without JavaScript
 fonts/                IBM Plex Sans + IBM Plex Mono (woff2, SIL OFL 1.1, see LICENSE files)
 favicon.svg           geometric motif mark
 ```
@@ -72,13 +83,21 @@ commented-out `html[lang="ar"]` block sketching this switch.
 
 ## Notes
 
-- Colors, layout, and copy follow the v1 design system: flat color fields
-  (no gradients/shadows), 0px border-radius throughout, drawn borders
-  between sections, and functional color use (magenta = action, blue =
-  systems, gold = heritage accents only — reserved for decorative motif
-  line art and small meta labels, since it fails text-contrast checks on
-  both Ink and Paper backgrounds).
-- The geometric motif (an abstracted eight-point star) is a single inline
-  SVG `<symbol>` referenced via `<use>` at three scales (hero, section
-  motifs, favicon) and recolored with CSS via `currentColor`.
-- Entrance animation on the hero is gated behind `prefers-reduced-motion`.
+- Colors, layout, and copy follow the design system: flat color fields (no
+  gradients/shadows), 0px border-radius throughout, drawn borders between
+  sections, and functional color use — magenta = action, blue = systems,
+  gold = heritage. All three now also carry full-fill backgrounds (tags,
+  buttons, nav hover) in addition to line art; the current token values were
+  chosen so every fill/text pairing actually used on the page clears WCAG AA
+  — re-check contrast before changing a token, don't just swap the hex.
+- The icon family (an abstracted eight-point star, interlocking rings, a
+  geometric eye/lens, and a node-and-line network glyph) are inline SVG
+  `<symbol>`s referenced via `<use>` and recolored with CSS via
+  `currentColor`. The same star shape, scaled down, tiles as the low-opacity
+  background texture behind the hero and footer.
+- Icons draw themselves on (stroke-dashoffset) the first time they scroll
+  into view, section blocks reveal on scroll, interactive elements (nav,
+  icons, buttons) get a small hover transform, and the background texture
+  shifts slightly on scroll (parallax) — all in `js/main.js`, all gated
+  behind `prefers-reduced-motion`, and all no-ops (content fully visible,
+  static) if JavaScript doesn't run.

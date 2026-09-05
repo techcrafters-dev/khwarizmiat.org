@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
+  <script>document.documentElement.classList.add('js');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Khwarizmiat — Technology people actually own</title>
   <meta name="description" content="Khwarizmiat is a feminist tech initiative based in Jordan, building autonomy, decentralization, and privacy into how communities across the Arabic-speaking Global South understand and use technology.">
@@ -17,15 +18,50 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- Shared geometric motif: an abstracted eight-point star built from two
-       overlapping squares, reused at hero/section/favicon scale and
-       recolored via the .motif--* classes (currentColor + CSS variables). -->
+  <!-- Shared geometric icon family: abstracted from Islamic geometric
+       patterning, one visual language at four scales/subjects, reused via
+       <use> and recolored with currentColor. Each shape carries
+       pathLength="1" so the .icon-draw stroke-dashoffset sweep (see
+       style.css) is uniform regardless of a shape's real path length. -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <!-- Eight-point star: autonomy / heritage mark -->
     <symbol id="khw-motif" viewBox="0 0 100 100">
-      <rect x="22" y="22" width="56" height="56" fill="none" stroke="currentColor" stroke-width="2"/>
-      <polygon points="50,10.4 89.6,50 50,89.6 10.4,50" fill="none" stroke="currentColor" stroke-width="2"/>
-      <circle cx="50" cy="50" r="14" fill="none" stroke="currentColor" stroke-width="2"/>
+      <rect x="22" y="22" width="56" height="56" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <polygon points="50,10.4 89.6,50 50,89.6 10.4,50" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <circle cx="50" cy="50" r="14" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/>
     </symbol>
+    <!-- Interlocking rings: decentralization -->
+    <symbol id="khw-chain" viewBox="0 0 100 100">
+      <circle cx="36" cy="50" r="26" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <circle cx="64" cy="50" r="26" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/>
+    </symbol>
+    <!-- Geometric eye / lens: privacy & surveillance -->
+    <symbol id="khw-eye" viewBox="0 0 100 100">
+      <polygon points="79.6,62.2 62.2,79.6 37.8,79.6 20.4,62.2 20.4,37.8 37.8,20.4 62.2,20.4 79.6,37.8" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <circle cx="50" cy="50" r="11" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <line x1="50" y1="20.4" x2="50" y2="9" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <line x1="50" y1="79.6" x2="50" y2="91" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <line x1="20.4" y1="50" x2="9" y2="50" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <line x1="79.6" y1="50" x2="91" y2="50" stroke="currentColor" stroke-width="2" pathLength="1"/>
+    </symbol>
+    <!-- Node-and-line network: community / connection -->
+    <symbol id="khw-network" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="7" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <circle cx="50" cy="18" r="7" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <circle cx="82" cy="50" r="7" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <circle cx="50" cy="82" r="7" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <circle cx="18" cy="50" r="7" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <line x1="50" y1="43" x2="50" y2="25" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <line x1="57" y1="50" x2="75" y2="50" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <line x1="50" y1="57" x2="50" y2="75" stroke="currentColor" stroke-width="2" pathLength="1"/>
+      <line x1="43" y1="50" x2="25" y2="50" stroke="currentColor" stroke-width="2" pathLength="1"/>
+    </symbol>
+    <!-- Tessellated background texture: a smaller-scale repeat of the star mark -->
+    <pattern id="khw-tile" width="80" height="80" patternUnits="userSpaceOnUse">
+      <rect x="17.6" y="17.6" width="44.8" height="44.8" fill="none" stroke="currentColor" stroke-width="1"/>
+      <polygon points="40,8.3 71.7,40 40,71.7 8.3,40" fill="none" stroke="currentColor" stroke-width="1"/>
+      <circle cx="40" cy="40" r="11.2" fill="none" stroke="currentColor" stroke-width="1"/>
+    </pattern>
   </svg>
 
   <header class="site-header">
@@ -34,7 +70,7 @@
       <nav class="site-nav" aria-label="Primary">
         <ul>
           <li><a href="#work">work</a></li>
-          <li><a href="#who">team</a></li>
+          <li><a href="#who">who</a></li>
           <li><a href="#contact">contact</a></li>
         </ul>
       </nav>
@@ -43,23 +79,26 @@
 
   <main id="main">
     <section class="block block--paper hero">
-      <div class="container hero">
+      <svg class="bg-texture" aria-hidden="true"><rect width="100%" height="100%" fill="url(#khw-tile)"/></svg>
+      <div class="container">
         <div>
           <h1 class="hero__headline">Technology people actually own.</h1>
           <p class="hero__support">Khwarizmiat is a feminist initiative building autonomy, decentralization, and privacy into how our communities understand and use technology, in Arabic, for the Arabic-speaking Global South.</p>
         </div>
-        <svg class="motif motif--magenta hero__motif" role="presentation" aria-hidden="true">
-          <use href="#khw-motif"></use>
-        </svg>
+        <div class="hero__motif-wrap">
+          <svg class="motif motif--magenta icon-draw" role="presentation" aria-hidden="true">
+            <use href="#khw-motif"></use>
+          </svg>
+        </div>
       </div>
     </section>
 
     <section id="work" aria-labelledby="work-heading">
       <h2 id="work-heading" class="visually-hidden">What we're building around</h2>
 
-      <article class="pillar">
+      <article class="pillar reveal">
         <div class="pillar__motif">
-          <svg class="motif motif--magenta" role="presentation" aria-hidden="true">
+          <svg class="motif motif--magenta icon-draw" role="presentation" aria-hidden="true">
             <use href="#khw-motif"></use>
           </svg>
         </div>
@@ -70,10 +109,10 @@
         </div>
       </article>
 
-      <article class="pillar pillar--reverse">
+      <article class="pillar pillar--reverse reveal">
         <div class="pillar__motif">
-          <svg class="motif motif--blue" role="presentation" aria-hidden="true">
-            <use href="#khw-motif"></use>
+          <svg class="motif motif--blue icon-draw" role="presentation" aria-hidden="true">
+            <use href="#khw-chain"></use>
           </svg>
         </div>
         <div class="pillar__text">
@@ -83,10 +122,10 @@
         </div>
       </article>
 
-      <article class="pillar">
+      <article class="pillar reveal">
         <div class="pillar__motif">
-          <svg class="motif motif--gold" role="presentation" aria-hidden="true">
-            <use href="#khw-motif"></use>
+          <svg class="motif motif--gold icon-draw" role="presentation" aria-hidden="true">
+            <use href="#khw-eye"></use>
           </svg>
         </div>
         <div class="pillar__text">
@@ -97,8 +136,64 @@
       </article>
     </section>
 
-    <section id="who" class="block block--paper block--bordered" aria-labelledby="who-heading">
+    <section id="what-we-do" class="block block--paper block--bordered" aria-labelledby="what-we-do-heading">
       <div class="container">
+        <h2 id="what-we-do-heading" class="section-heading">What we do</h2>
+        <ul class="tag-grid reveal">
+          <li class="tag tag--magenta">
+            <svg class="tag__icon icon-draw" aria-hidden="true"><use href="#khw-network"></use></svg>
+            <span>Community building, convening &amp; organising</span>
+          </li>
+          <li class="tag tag--blue">
+            <svg class="tag__icon icon-draw" aria-hidden="true"><use href="#khw-chain"></use></svg>
+            <span>Community-grounded tech dev &amp; care</span>
+          </li>
+          <li class="tag tag--gold">
+            <svg class="tag__icon icon-draw" aria-hidden="true"><use href="#khw-network"></use></svg>
+            <span>Direct support to communities</span>
+          </li>
+          <li class="tag tag--magenta">
+            <svg class="tag__icon icon-draw" aria-hidden="true"><use href="#khw-eye"></use></svg>
+            <span>Knowledge building, monitoring and research</span>
+          </li>
+          <li class="tag tag--blue">
+            <svg class="tag__icon icon-draw" aria-hidden="true"><use href="#khw-motif"></use></svg>
+            <span>Trainings, skills building &amp; education</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="focus-areas" class="block block--ink" aria-labelledby="focus-areas-heading">
+      <div class="container">
+        <h2 id="focus-areas-heading" class="section-heading">Focus areas</h2>
+        <ul class="tag-grid reveal">
+          <li class="tag tag--gold">
+            <svg class="tag__icon icon-draw" aria-hidden="true"><use href="#khw-motif"></use></svg>
+            <span>Feminist frameworks, decolonising &amp; imagination of tech</span>
+          </li>
+          <li class="tag tag--magenta">
+            <svg class="tag__icon icon-draw" aria-hidden="true"><use href="#khw-eye"></use></svg>
+            <span>Knowledge justice, right to expression &amp; information</span>
+          </li>
+          <li class="tag tag--blue">
+            <svg class="tag__icon icon-draw" aria-hidden="true"><use href="#khw-chain"></use></svg>
+            <span>Safety and freedom from violence</span>
+          </li>
+          <li class="tag tag--gold">
+            <svg class="tag__icon icon-draw" aria-hidden="true"><use href="#khw-eye"></use></svg>
+            <span>Surveillance, privacy &amp; embodiment</span>
+          </li>
+          <li class="tag tag--magenta">
+            <svg class="tag__icon icon-draw" aria-hidden="true"><use href="#khw-network"></use></svg>
+            <span>Tech, access &amp; accessibility</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="who" class="block block--paper block--bordered" aria-labelledby="who-heading">
+      <div class="container reveal">
         <h2 id="who-heading" class="visually-hidden">Who we are</h2>
         <p class="who__text">We are a group of young feminists based in Jordan striving to understand and produce collective knowledge about technology, how it works, and how to access its tools freely, away from monopoly and knowledge hegemony, through an anti-colonial and intersectional feminist perspective. We aim to disseminate this knowledge among marginalized groups and individuals in our contexts within the Arabic-speaking Global South in Arabic, through our commitment to three fundamental principles around which our work revolves: autonomy, decentralization, and privacy.</p>
         <p class="who__meta mono">Founded 2026 · Based in Jordan</p>
@@ -106,27 +201,24 @@
     </section>
 
     <section id="contact" class="block block--ink" aria-labelledby="contact-heading">
-      <div class="container">
+      <div class="container reveal">
         <h2 id="contact-heading">Get in touch</h2>
-        <ul class="contact__list">
-          <li>
-            <span class="contact__label mono">Email</span>
-            <a class="mono" href="mailto:lameesnade@gmail.com">lameesnade@gmail.com</a>
-          </li>
-          <li>
-            <span class="contact__label mono">Signal / WhatsApp</span>
-            <a class="mono" href="https://signal.me/#p/+962796109891">+962 79 610 9891</a> <span class="mono">(Signal preferred)</span>
-          </li>
-        </ul>
+        <div class="contact__method">
+          <span class="contact__label mono">Email</span>
+          <a class="button button--magenta mono" href="mailto:info@khwarizmiat.org">info@khwarizmiat.org</a>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
+    <svg class="bg-texture" aria-hidden="true"><rect width="100%" height="100%" fill="url(#khw-tile)"/></svg>
     <div class="container site-footer__inner">
       <span>Khwarizmiat خوارزميات</span>
       <span>khwarizmiat.org</span>
     </div>
   </footer>
+
+  <script src="js/main.js" defer></script>
 </body>
 </html>
