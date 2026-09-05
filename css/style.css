@@ -1,0 +1,456 @@
+/*
+  Khwarizmiat — v1 (English, LTR)
+
+  Logical properties are used throughout (margin-inline, padding-block,
+  border-inline-start, text-align: start, etc.) instead of left/right
+  equivalents so a future Arabic/RTL version is a CSS + content swap,
+  not a rebuild. CSS Grid column tracks already follow the inline axis
+  of `direction`, so no extra logical handling is needed there.
+
+  Color is functional, not decorative (see brand spec):
+  - Signal Magenta:  action / feminist emphasis
+  - Circuit Blue:    systems / technical content
+  - Manuscript Gold: heritage reference, used sparingly, decorative only
+    (it fails WCAG contrast as text on both Ink and Paper, so it never
+    carries text — only line art on Ink backgrounds).
+  Magenta also fails AA for small body text on Paper/Ink (3.78:1), so it
+  is used as an underline/border accent on readable text, and solid only
+  at large-text sizes (>=24px) or in decorative line art.
+*/
+
+@import url("fonts.css");
+
+:root {
+  --ink: #14120f;
+  --paper: #e4e1d6;
+  --signal-magenta: #d6127d;
+  --circuit-blue: #1e3fe0;
+  --manuscript-gold: #c89b3c;
+  --line: #3a362c;
+
+  --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --measure: 40em;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --border: 1px solid var(--line);
+
+  color-scheme: light;
+}
+
+/* Reserved for the bilingual/RTL pass: IBM Plex Sans Arabic is the matched
+   sibling of IBM Plex Sans (same superfamily, same visual voice), and the
+   mono slots (nav/labels/data) switch to it at tighter tracking instead of
+   a literal monospace, since true monospacing does not suit Arabic's
+   connected script. Not shipped in this English-only v1.
+html[lang="ar"] {
+  direction: rtl;
+  --font-sans: "IBM Plex Sans Arabic", var(--font-sans);
+  --font-mono: "IBM Plex Sans Arabic", var(--font-sans);
+}
+*/
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+@media (min-width: 48em) {
+  body {
+    font-size: 18px;
+  }
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+  margin-block: 0 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+p {
+  max-width: var(--measure);
+}
+
+a {
+  color: inherit;
+}
+
+.visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  inset-block-start: -3rem;
+  inset-inline-start: 0.5rem;
+  z-index: 100;
+  padding: 0.5rem 0.75rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: inset-block-start 0.15s ease;
+}
+
+.skip-link:focus {
+  inset-block-start: 0.5rem;
+}
+
+:focus-visible {
+  outline: 2px solid var(--signal-magenta);
+  outline-offset: 2px;
+}
+
+/* ---------- mono / labels ---------- */
+
+.mono {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.eyebrow-number {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 1.75rem;
+  font-weight: 500;
+  color: var(--line);
+  margin-block-end: 0.75rem;
+}
+
+/* ---------- link / accent treatment ---------- */
+/* Text stays Ink-on-Paper / Paper-on-Ink for contrast; magenta carries the
+   "signal" as an underline accent, never as small solid text color. */
+
+.text-link {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-color: var(--signal-magenta);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.text-link:hover,
+.text-link:focus-visible {
+  text-decoration-thickness: 3px;
+}
+
+/* ---------- geometric motif ---------- */
+
+.motif {
+  display: block;
+  color: var(--line);
+}
+
+.motif--magenta {
+  color: var(--signal-magenta);
+}
+
+.motif--blue {
+  color: var(--circuit-blue);
+}
+
+.motif--gold {
+  color: var(--manuscript-gold);
+}
+
+.motif--paper {
+  color: var(--paper);
+}
+
+/* Circuit Blue reads dark against Ink (low luminance contrast by design of
+   the palette); a slightly heavier stroke keeps the line art legible. */
+.motif--blue circle,
+.motif--blue polygon,
+.motif--blue rect {
+  stroke-width: 2.5;
+}
+
+/* ---------- layout shell ---------- */
+
+.container {
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.block {
+  padding-block: clamp(3rem, 8vw, 6rem);
+}
+
+.block--ink {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.block--paper {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.block--bordered {
+  border-block-start: var(--border);
+}
+
+/* ---------- header ---------- */
+
+.site-header {
+  border-block-end: var(--border);
+  background: var(--paper);
+}
+
+.site-header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 1.25rem;
+}
+
+.wordmark {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.wordmark:hover,
+.wordmark:focus-visible {
+  text-decoration: underline;
+  text-decoration-color: var(--signal-magenta);
+  text-decoration-thickness: 2px;
+}
+
+.site-nav ul {
+  display: flex;
+  list-style: none;
+  padding-inline-start: 0;
+  gap: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+}
+
+.site-nav a {
+  text-decoration: none;
+  padding-block: 0.25rem;
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  text-decoration: underline;
+  text-decoration-color: var(--signal-magenta);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+/* ---------- hero ---------- */
+
+.hero {
+  display: grid;
+  gap: clamp(2rem, 6vw, 4rem);
+  align-items: center;
+  padding-block: clamp(3.5rem, 10vw, 7rem);
+}
+
+@media (min-width: 60em) {
+  .hero {
+    grid-template-columns: 3fr 2fr;
+  }
+}
+
+.hero__headline {
+  font-size: clamp(2.25rem, 6vw, 4.25rem);
+  font-weight: 600;
+  max-width: 16ch;
+}
+
+.hero__support {
+  margin-block-start: 1.5rem;
+  font-size: 1.125rem;
+  max-width: 42ch;
+  color: var(--line);
+}
+
+.hero__motif {
+  justify-self: center;
+  inline-size: min(60vw, 22rem);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__headline,
+  .hero__support,
+  .hero__motif {
+    animation: rise-in 0.6s ease-out both;
+  }
+
+  .hero__support {
+    animation-delay: 0.1s;
+  }
+
+  .hero__motif {
+    animation-delay: 0.15s;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- pillars (three commitments) ---------- */
+
+.pillar {
+  display: grid;
+}
+
+@media (min-width: 56em) {
+  .pillar {
+    grid-template-columns: 1fr 1fr;
+    min-block-size: 24rem;
+  }
+
+  .pillar--reverse .pillar__motif {
+    order: 2;
+  }
+
+  .pillar--reverse .pillar__text {
+    order: 1;
+  }
+}
+
+.pillar__motif {
+  background: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2.5rem, 8vw, 4rem);
+}
+
+.pillar__motif .motif {
+  inline-size: min(50vw, 14rem);
+}
+
+.pillar__text {
+  background: var(--paper);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2.5rem, 8vw, 4rem);
+}
+
+.pillar__heading {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-block-end: 1rem;
+}
+
+.pillar__body {
+  color: var(--line);
+}
+
+/* ---------- who we are ---------- */
+
+.who__text {
+  font-size: 1.125rem;
+}
+
+.who__meta {
+  margin-block-start: 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  color: var(--line);
+}
+
+/* ---------- contact ---------- */
+
+#contact-heading {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.contact__list {
+  list-style: none;
+  padding-inline-start: 0;
+  margin-block-start: 2rem;
+  display: grid;
+  gap: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 1.0625rem;
+}
+
+.contact__label {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--manuscript-gold);
+  margin-block-end: 0.375rem;
+}
+
+.contact__list a {
+  text-decoration-line: underline;
+  text-decoration-color: var(--signal-magenta);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+/* ---------- footer ---------- */
+
+.site-footer {
+  border-block-start: var(--border);
+  background: var(--paper);
+  padding-block: 1.5rem;
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--line);
+}
